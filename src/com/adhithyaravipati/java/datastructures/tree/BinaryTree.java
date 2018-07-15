@@ -18,6 +18,8 @@ public interface BinaryTree<E> {
 	
 	Position<E> root();
 	
+	Position<E> addRoot(E element) throws IllegalStateException;
+	
 	Position<E> parent(Position<E> position) throws IllegalArgumentException;
 	
 	Position<E> left(Position<E> position) throws IllegalArgumentException;

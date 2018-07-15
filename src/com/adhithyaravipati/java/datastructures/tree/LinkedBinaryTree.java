@@ -102,6 +102,17 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 	}
 
 	@Override
+	public Position<E> addRoot(E element) throws IllegalStateException {
+		if(!isEmpty()) {
+			throw new IllegalStateException("The tree already contains a root node");
+		}
+		Node<E> newNode = createNode(element, null, null, null);
+		root = newNode;
+		size++;
+		return root;
+	}
+
+	@Override
 	public Position<E> parent(Position<E> position) throws IllegalArgumentException {
 		Node<E> treeNode = validate(position);
 		return treeNode.getParent();
