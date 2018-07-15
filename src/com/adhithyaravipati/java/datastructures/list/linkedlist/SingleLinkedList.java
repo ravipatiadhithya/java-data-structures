@@ -1,8 +1,10 @@
 package com.adhithyaravipati.java.datastructures.list.linkedlist;
 
+import java.util.Iterator;
+
 import com.adhithyaravipati.java.datastructures.model.Position;
 
-public class SingleLinkedList<E> {
+public class SingleLinkedList<E> implements Iterable<E> {
 	
 	protected class Node<T extends E> implements Position<T>{
 		
@@ -94,4 +96,25 @@ public class SingleLinkedList<E> {
 		size--;
 		return elementToReturn;
 	}
+
+	@Override
+	public Iterator<E> iterator() {
+		Iterator<E> iterator = new Iterator<E>() {
+
+			Node<E> currentPosition = new Node(null, head);
+			
+			@Override
+			public boolean hasNext() {
+				return currentPosition.getNext() != null;
+			}
+
+			@Override
+			public E next() {
+				currentPosition = currentPosition.getNext();
+				return currentPosition.getElement();
+			}
+		};
+		return iterator;
+	}
+	
 }
