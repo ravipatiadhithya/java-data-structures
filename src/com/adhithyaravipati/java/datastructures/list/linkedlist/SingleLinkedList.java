@@ -101,7 +101,7 @@ public class SingleLinkedList<E> implements Iterable<E> {
 	public Iterator<E> iterator() {
 		Iterator<E> iterator = new Iterator<E>() {
 
-			Node<E> currentPosition = new Node(null, head);
+			Node<E> currentPosition = new Node<>(null, head);
 			
 			@Override
 			public boolean hasNext() {
