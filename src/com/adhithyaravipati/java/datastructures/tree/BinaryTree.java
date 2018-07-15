@@ -22,6 +22,8 @@ public interface BinaryTree<E> {
 	
 	Position<E> parent(Position<E> position) throws IllegalArgumentException;
 	
+	Iterable<Position<E>> getChildren(Position<E> position) throws IllegalArgumentException;
+	
 	Position<E> left(Position<E> position) throws IllegalArgumentException;
 	
 	Position<E> addLeft(Position<E> position, E element) throws IllegalArgumentException, IllegalStateException;
@@ -31,5 +33,9 @@ public interface BinaryTree<E> {
 	Position<E> addRight(Position<E> position, E element) throws IllegalArgumentException, IllegalStateException;
 	
 	Position<E> sibling(Position<E> position) throws IllegalArgumentException;
+	
+	int height(Position<E> position);
+	
+	int depth(Position<E> position);
 
 }

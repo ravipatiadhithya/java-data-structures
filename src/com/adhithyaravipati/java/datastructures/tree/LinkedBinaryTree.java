@@ -1,54 +1,58 @@
 package com.adhithyaravipati.java.datastructures.tree;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.adhithyaravipati.java.datastructures.model.Position;
 
 public class LinkedBinaryTree<E> implements BinaryTree<E> {
 	
-	protected class Node<T extends E> implements Position<T> {
-		private T element;
-		private Node<T> left;
-		private Node<T> right;
-		private Node<T> parent;
+	protected class Node implements Position<E> {
+		private E element;
+		private Node left;
+		private Node right;
+		private Node parent;
 		
 		@Override
-		public T getElement() {
+		public E getElement() {
 			return this.element;
 		}
 		@Override
-		public void setElement(T element) {
+		public void setElement(E element) {
 			this.element = element;
 		}
-		public Node<T> getLeft() {
+		public Node getLeft() {
 			return left;
 		}
-		public void setLeft(Node<T> left) {
+		public void setLeft(Node left) {
 			this.left = left;
 		}
-		public Node<T> getRight() {
+		public Node getRight() {
 			return right;
 		}
-		public void setRight(Node<T> right) {
+		public void setRight(Node right) {
 			this.right = right;
 		}
-		public Node<T> getParent() {
+		public Node getParent() {
 			return parent;
 		}
-		public void setParent(Node<T> parent) {
+		public void setParent(Node parent) {
 			this.parent = parent;
 		}
 	
 	}
 	
-	protected Node<E> validate(Position<E> position) throws IllegalArgumentException {
-		if(!(position instanceof Node)) {
+	protected Node validate(Position<E> position) throws IllegalArgumentException {
+		if(position != null
+				&& !(position instanceof LinkedBinaryTree.Node)) {
 			throw new IllegalArgumentException("Given position does not belong to this tree");
 		}
-		Node<E> treeNode = (Node<E>) position;
+		Node treeNode = (Node) position;
 		return treeNode;
 	}
 	
-	protected Node<E> createNode(E element, Position<E> top, Position<E> left, Position<E> right) throws IllegalArgumentException {
-		Node<E> newTreeNode = new Node<>();
+	protected Node createNode(E element, Position<E> top, Position<E> left, Position<E> right) throws IllegalArgumentException {
+		Node newTreeNode = new Node();
 		newTreeNode.setElement(element);
 		newTreeNode.setParent(validate(top));
 		newTreeNode.setLeft(validate(left));
@@ -56,7 +60,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 		return newTreeNode;
 	}
 	
-	private Node<E> root;
+	private Node root;
 	private int size;
 
 	@Override
@@ -106,7 +110,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 		if(!isEmpty()) {
 			throw new IllegalStateException("The tree already contains a root node");
 		}
-		Node<E> newNode = createNode(element, null, null, null);
+		Node newNode = createNode(element, null, null, null);
 		root = newNode;
 		size++;
 		return root;
@@ -114,13 +118,25 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 
 	@Override
 	public Position<E> parent(Position<E> position) throws IllegalArgumentException {
-		Node<E> treeNode = validate(position);
+		Node treeNode = validate(position);
 		return treeNode.getParent();
 	}
 
 	@Override
+	public Iterable<Position<E>> getChildren(Position<E> position) throws IllegalArgumentException {
+		List<Position<E>> childrenList = new ArrayList<>(2);
+		if(left(position) != null) {
+			childrenList.add(left(position));
+		}
+		if(right(position) != null) {
+			childrenList.add(right(position));
+		}
+		return childrenList;
+	}
+
+	@Override
 	public Position<E> left(Position<E> position) throws IllegalArgumentException {
-		Node<E> treeNode = validate(position);
+		Node treeNode = validate(position);
 		return treeNode.getLeft();
 	}
 
@@ -130,9 +146,9 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 			throw new IllegalStateException("The position already contains a left child.");
 		}
 	
-		Node<E> leftChild = createNode(element, position, null, null);
+		Node leftChild = createNode(element, position, null, null);
 		
-		Node<E> parent = validate(position);
+		Node parent = validate(position);
 		parent.setLeft(leftChild);
 		size++;
 		return leftChild;
@@ -140,7 +156,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 
 	@Override
 	public Position<E> right(Position<E> position) throws IllegalArgumentException {
-		Node<E> treeNode = validate(position);
+		Node treeNode = validate(position);
 		return treeNode.getRight();
 	}
 
@@ -150,9 +166,9 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 			throw new IllegalStateException("The position already contains a right child");
 		}
 		
-		Node<E> rightChild = createNode(element, position, null, null);
+		Node rightChild = createNode(element, position, null, null);
 		
-		Node<E> parent = validate(position);
+		Node parent = validate(position);
 		parent.setRight(rightChild);
 		size++;
 		return rightChild;
@@ -160,7 +176,7 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 
 	@Override
 	public Position<E> sibling(Position<E> position) throws IllegalArgumentException {
-		Node<E> treeNode = validate(position);
+		Node treeNode = validate(position);
 		if(treeNode.getParent() == null) {
 			return null;
 		}
@@ -175,6 +191,25 @@ public class LinkedBinaryTree<E> implements BinaryTree<E> {
 		
 		return null;
 		
+	}
+
+	@Override
+	public int height(Position<E> position) {
+		int height = 0;
+		for(Position<E> child : getChildren(position)) {
+			height = Math.max(height, 1 + height(child));
+		}
+		return height;
+	}
+
+	@Override
+	public int depth(Position<E> position) {
+		if(position == root()) {
+			return 0;
+		} else {
+			Node treeNode = validate(position);
+			return 1 + depth(parent(treeNode));
+		}
 	}
 
 }
