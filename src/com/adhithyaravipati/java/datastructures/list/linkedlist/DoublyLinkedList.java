@@ -1,8 +1,10 @@
 package com.adhithyaravipati.java.datastructures.list.linkedlist;
 
+import java.util.Iterator;
+
 import com.adhithyaravipati.java.datastructures.model.Position;
 
-public class DoublyLinkedList<E> {
+public class DoublyLinkedList<E> implements Iterable<Position<E>>{
 
 	protected class Node<T extends E> implements Position<T> {
 		private T element;
@@ -140,6 +142,26 @@ public class DoublyLinkedList<E> {
 		}
 		Node<E> node = (Node<E>) position;
 		return node;
+	}
+
+	@Override
+	public Iterator<Position<E>> iterator() {
+		Iterator<Position<E>> iterator = new Iterator<Position<E>>() {
+
+			private Node<E> currentNode = new Node<>(null, null, head);
+
+			@Override
+			public boolean hasNext() {
+				return currentNode.getNextNode() != null;
+			}
+
+			@Override
+			public Position<E> next() {
+				currentNode = currentNode.getNextNode();
+				return currentNode;
+			}
+		};
+		return iterator;
 	}
 
 }
