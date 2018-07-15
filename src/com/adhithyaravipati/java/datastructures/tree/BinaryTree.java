@@ -22,11 +22,11 @@ public interface BinaryTree<E> {
 	
 	Position<E> left(Position<E> position) throws IllegalArgumentException;
 	
-	void addLeft(Position<E> position) throws IllegalArgumentException, IllegalStateException;
+	void addLeft(Position<E> position, E element) throws IllegalArgumentException, IllegalStateException;
 	
 	Position<E> right(Position<E> position) throws IllegalArgumentException;
 	
-	void addRight(Position<E> position) throws IllegalArgumentException, IllegalStateException;
+	void addRight(Position<E> position, E element) throws IllegalArgumentException, IllegalStateException;
 	
 	Position<E> sibling(Position<E> position) throws IllegalArgumentException;
 
